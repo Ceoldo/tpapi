@@ -9,7 +9,7 @@ function toggleAuthForms() {
         document.getElementById("loginContainer").style.display === "none" ? "block" : "none";
 }
 
-// 🔑 Inscription utilisateur
+
 document.getElementById("registerForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const email = document.getElementById("registerEmail").value;
@@ -31,7 +31,7 @@ document.getElementById("registerForm").addEventListener("submit", async (event)
     }
 });
 
-// 🔑 Connexion utilisateur
+
 document.getElementById("loginForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const email = document.getElementById("loginEmail").value;
@@ -54,20 +54,20 @@ document.getElementById("loginForm").addEventListener("submit", async (event) =>
     }
 });
 
-// ✅ Afficher l'application après connexion
+
 function showApp() {
     document.getElementById("registerContainer").style.display = "none";
     document.getElementById("loginContainer").style.display = "none";
     document.getElementById("mainApp").style.display = "block";
 }
 
-// ❌ Déconnexion utilisateur
+
 document.getElementById("logoutButton").addEventListener("click", () => {
     localStorage.removeItem("token");
     location.reload();
 });
 
-// 🔄 Charger les utilisateurs (avec gestion des boutons d'action)
+
 async function fetchUsers() {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -99,7 +99,7 @@ async function fetchUsers() {
     }
 }
 
-// ✏️ Modifier un utilisateur (Affichage du formulaire avec les infos)
+
 function editUser(id, nom, email) {
     console.log(`Modification utilisateur ID: ${id}, Nom: ${nom}, Email: ${email}`);
     document.getElementById("editId").value = id;
@@ -108,7 +108,7 @@ function editUser(id, nom, email) {
     document.getElementById("editForm").style.display = "block";
 }
 
-// 📝 Mettre à jour un utilisateur dans la base de données
+
 document.getElementById("editForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const id = document.getElementById("editId").value;
@@ -134,7 +134,6 @@ document.getElementById("editForm").addEventListener("submit", async (event) => 
     }
 });
 
-// ➕ Ajouter un utilisateur
 document.getElementById("userForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const nom = document.getElementById("nom").value;
@@ -159,7 +158,7 @@ document.getElementById("userForm").addEventListener("submit", async (event) => 
     }
 });
 
-// ❌ Supprimer un utilisateur
+
 async function deleteUser(id) {
     const token = localStorage.getItem("token");
 
@@ -178,7 +177,7 @@ async function deleteUser(id) {
     }
 }
 
-// 🔄 Vérifier le rôle de l'utilisateur après connexion
+
 async function checkUserRole() {
     const token = localStorage.getItem("token");
     if (!token) return;
@@ -192,7 +191,7 @@ async function checkUserRole() {
     }
 }
 
-// Vérifier le rôle après connexion
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("Script chargé !");
     console.log("editUser est défini ?", typeof editUser !== "undefined");
