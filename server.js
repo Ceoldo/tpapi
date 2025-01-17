@@ -12,7 +12,7 @@ app.use(express.json());
 
 const SECRET_KEY = process.env.JWT_SECRET || "supersecretkey";
 
-// Connexion à MySQL
+
 const db = mysql.createConnection({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -28,7 +28,7 @@ db.connect(err => {
     console.log('✅ Connecté à MySQL avec succès');
 });
 
-// 🔐 Middleware pour vérifier le token JWT
+
 const verifyToken = (req, res, next) => {
     const token = req.headers["authorization"];
     if (!token) return res.status(403).json({ error: "Accès refusé, token manquant." });
@@ -40,7 +40,7 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-// 🔐 Middleware pour vérifier si l'utilisateur est admin
+
 const verifyAdmin = (req, res, next) => {
     if (req.user.role !== "admin") {
         return res.status(403).json({ error: "Accès refusé, admin requis." });
@@ -48,7 +48,7 @@ const verifyAdmin = (req, res, next) => {
     next();
 };
 
-// ➕ Route d'inscription
+
 app.post('/register', async (req, res) => {
     const { email, password, role } = req.body;
     if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
@@ -62,7 +62,7 @@ app.post('/register', async (req, res) => {
     });
 });
 
-// 🔑 Route de connexion (🔹 Correction du rôle admin)
+
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) return res.status(400).json({ error: "Email et mot de passe requis" });
@@ -77,7 +77,7 @@ app.post('/login', (req, res) => {
 
         console.log(`✅ Utilisateur connecté : ${user.email}, rôle : ${user.role}`);
 
-        // ✅ Ajout du rôle dans le token JWT
+        
         const token = jwt.sign(
             { id: user.id, email: user.email, role: user.role },
             SECRET_KEY,
@@ -88,7 +88,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-// 🛑 CRUD Utilisateurs Protégé (Admin uniquement)
+
 app.get('/protected/users', verifyToken, verifyAdmin, (req, res) => {
     db.query('SELECT * FROM utilisateurs', (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -119,14 +119,14 @@ app.delete('/users/:id', verifyToken, verifyAdmin, (req, res) => {
     });
 });
 
-// Servir les fichiers statiques (HTML, CSS, JS) depuis le dossier frontend
+
 app.use(express.static(path.join(__dirname, "frontend")));
 
-// Route pour servir la page d'accueil
+
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-// Lancer le serveur
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`));
